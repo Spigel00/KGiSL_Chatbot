@@ -251,8 +251,8 @@ def main():
     """Example usage"""
     chunker = TextChunker(chunk_size=500, chunk_overlap=50)
     
-    input_directory = "processed_data"
-    output_directory = "processed_data/chunks"
+    input_directory = "2_data_processing/processed_data"
+    output_directory = "2_data_processing/processed_data/chunks"
     
     if os.path.exists(input_directory):
         files, chunks = chunker.process_directory(input_directory, output_directory)

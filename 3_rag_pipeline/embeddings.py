@@ -211,9 +211,9 @@ def main():
     """Example usage"""
     generator = EmbeddingGenerator()
     
-    input_directory = "../2_data_processing/processed_data/enhanced_chunks"
-    output_directory = "embedded_chunks"
-    index_file = "embedding_index.pkl"
+    input_directory = "2_data_processing/processed_data/chunks"
+    output_directory = "3_rag_pipeline/embedded_chunks"
+    index_file = "3_rag_pipeline/embedding_index.pkl"
     
     if os.path.exists(input_directory):
         # Generate embeddings

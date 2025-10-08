@@ -179,8 +179,8 @@ def main():
     cleaner = TextCleaner()
     
     # Process scraped data
-    input_directory = "../1_data_scraping/raw_data"
-    output_directory = "processed_data"
+    input_directory = "1_data_scraping/raw_data"
+    output_directory = "2_data_processing/processed_data"
     
     if os.path.exists(input_directory):
         count = cleaner.process_directory(input_directory, output_directory)
