@@ -54,9 +54,13 @@ venv.bak/
 *.pdf
 *.docx
 *.txt
-raw_data/
-processed_data/
-models/
+# Keep directories but ignore their contents
+raw_data/*
+!raw_data/.gitkeep
+processed_data/*
+!processed_data/.gitkeep
+models/*
+!models/.gitkeep
 
 # OS
 .DS_Store
