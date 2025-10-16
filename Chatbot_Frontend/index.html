@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Chat Demo</title>
+  <style>
+   body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+}
+  
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      z-index: 1;
+    }
+
+    model-viewer {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 180px;
+  height: 180px;
+  cursor: pointer;
+  z-index: 10001;
+  animation: float 3s ease-in-out infinite;
+  pointer-events: auto;
+  background: transparent;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+model-viewer::part(canvas) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+model-viewer:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    iframe#chat-iframe {
+      position: fixed;
+      bottom: 200px;
+      right: 40px;
+      width: 420px;
+      height: 700px;
+      border: none;
+      border-radius: 25px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      z-index: 10000; /* Below model-viewer */
+      background: transparent;
+      animation: slideUp 0.4s ease-out forwards;
+      pointer-events: auto;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    #close-chat {
+      position: fixed;
+      bottom: 920px;
+      right: 460px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: #00c6ff;
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+      z-index: 10002;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 198, 255, 0.5);
+    }
+
+    #close-chat:hover {
+      background: #009bd8;
+    }
+
+    .hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  }
+  
+
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to the 3D Chat Demo</h1>
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <model-viewer id="chat-model"
+    class="hidden"
+    src="final_logo.glb"
+    alt="Chat Logo"
+    exposure="1.2"
+    shadow-intensity="1"
+    interaction-prompt="none">
+  </model-viewer>
+
+  <script>
+    const chatModel = document.getElementById('chat-model');
+    let chatVisible = false;
+
+    chatModel.addEventListener('load', () => {
+    chatModel.classList.remove('hidden');
+  });
+    function openChat() {
+      if (document.getElementById('chat-iframe')) return;
+
+      const chatWindow = document.createElement('iframe');
+      chatWindow.src = 'chat.html';
+      chatWindow.id = 'chat-iframe';
+      chatWindow.style.pointerEvents = 'auto';
+      document.body.appendChild(chatWindow);
+
+
+      chatVisible = true;
+    }
+
+    function closeChat() {
+      const chatWindow = document.getElementById('chat-iframe');
+      const closeBtn = document.getElementById('close-chat');
+      if (chatWindow) chatWindow.remove();
+      if (closeBtn) closeBtn.remove();
+      chatVisible = false;
+    }
+
+    chatModel.addEventListener('load', () => {
+  // Wait a short moment to ensure rendering is complete
+  setTimeout(() => {
+    // Force canvas background to transparent
+    const canvas = chatModel.shadowRoot && chatModel.shadowRoot.querySelector('canvas');
+    if (canvas) {
+      canvas.style.background = 'transparent';
+      canvas.style.backgroundColor = 'transparent';
+    }
+    chatModel.classList.remove('hidden');
+  }, 100); // 100ms delay
+});
+
+    chatModel.addEventListener('click', () => {
+      if (chatVisible) {
+        closeChat();
+      } else {
+        openChat();
+      }
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(openChat, 1000); 
+    });
+  </script>
+
+</body>
+</html>
